@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React Saluran (Demo)</title>
+  <style>
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu}
+    body{margin:0;min-height:100vh;background:radial-gradient(1200px 600px at 20% -10%, #5b2cff33, transparent),linear-gradient(180deg,#0b0620,#06030f);color:#eae7ff;display:flex;align-items:center;justify-content:center}
+    .card{width:min(92vw,420px);background:linear-gradient(180deg,#120a3a,#0b0620);border-radius:18px;padding:18px;box-shadow:0 20px 60px #0008;border:1px solid #2a1f6a}
+    h1{font-size:22px;margin:6px 0 14px;text-align:center}
+    .tabs{display:flex;gap:10px;justify-content:center;margin-bottom:12px}
+    .tab{padding:8px 14px;border-radius:999px;background:#1a1152;border:1px solid #2a1f6a;cursor:pointer}
+    .tab.active{background:linear-gradient(90deg,#2ee6c6,#b96cff);color:#05020c}
+    label{font-size:12px;color:#bfb8ff}
+    input,select{width:100%;margin-top:6px;margin-bottom:12px;padding:12px;border-radius:12px;background:#0f0a33;border:1px solid #2a1f6a;color:#fff}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .emoji-list{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+    .emoji{padding:8px 10px;border-radius:10px;background:#0f0a33;border:1px solid #2a1f6a;cursor:pointer}
+    .emoji.active{outline:2px solid #2ee6c6}
+    button{width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(90deg,#2ee6c6,#b96cff);color:#05020c;font-weight:700;cursor:pointer}
+    .ok{margin-top:10px;background:#0f2b1f;border:1px solid #2ee6c6;color:#7fffd4;padding:10px;border-radius:12px;text-align:center;display:none}
+    .note{margin-top:12px;font-size:11px;color:#a9a2ff;opacity:.9}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>React Saluran</h1>
+    <div class="tabs">
+      <div class="tab active">Saluran</div>
+      <div class="tab">Saweria</div>
+    </div><label>Link Teks Saluran</label>
+<input id="link" placeholder="https://whatsapp.com/channel/..." />
+
+<label>Emoji Reaction</label>
+<div class="emoji-list" id="emojis"></div>
+
+<div class="row">
+  <div>
+    <label>Emoji Kustom</label>
+    <input id="customEmoji" placeholder="contoh: 🔥" />
+  </div>
+  <div>
+    <label>Jumlah</label>
+    <input id="count" type="number" min="1" value="1" />
+  </div>
+</div>
+
+<button id="send">Kirim Reaction</button>
+<div class="ok" id="ok">✅ (Demo) Reaction berhasil dikirim!</div>
+<div class="note">Catatan: ini DEMO UI. Tidak benar‑benar mengirim reaction ke WhatsApp.</div>
+
+  </div>  <script>
+    const preset = ['😂','👍','😮','🔥','❤️'];
+    const wrap = document.getElementById('emojis');
+    let selected = preset[0];
+
+    function render(){
+      wrap.innerHTML='';
+      preset.forEach(e=>{
+        const b=document.createElement('div');
+        b.className='emoji'+(e===selected?' active':'');
+        b.textContent=e;
+        b.onclick=()=>{selected=e; render()};
+        wrap.appendChild(b);
+      });
+    }
+    render();
+
+    document.getElementById('customEmoji').addEventListener('input',e=>{
+      const v=e.target.value.trim();
+      if(v){selected=v; if(!preset.includes(v)) preset.unshift(v); render();}
+    });
+
+    document.getElementById('send').onclick=()=>{
+      const link=document.getElementById('link').value.trim();
+      const count=+document.getElementById('count').value||1;
+      if(!link){alert('Masukin link saluran dulu');return;}
+      document.getElementById('ok').style.display='block';
+      document.getElementById('ok').textContent=`✅ (Demo) ${count} reaction ${selected} untuk ${link}`;
+    };
+  </script></body>
+</html>
